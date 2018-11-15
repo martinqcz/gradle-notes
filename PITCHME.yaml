@@ -1,0 +1,21 @@
+
+published: false
+
+theme: simple
+
+theme-override: assets/custom.css
+
+logo: https://www.ataccama.com/assets/img/bg/slider/ataccama_logo.png
+logo-position: top-left
+
+footnote: "Gradle: Build happiness"
+
+# highlight: atom-one-dark
+highlight: monokai
+# highlight: black
+# highlight: moon
+# highlight: night
+
+layout: center
+
+code-line-numbers: false
