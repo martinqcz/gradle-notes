@@ -11,31 +11,58 @@ Gradle build phases
 
 Gradle has three build phases
 @ol[](true)
-- initialization
-- configuration
-- execution
+- Initialization
+- Configuration
+- Execution
 @olend
 
 ---
-@title[GRADLE_USER_HOME]
+@title[Initialization phase]
 @snap[north]
-GRADLE_USER_HOME
-@snapend
+Initialization phase
+@spanend
 
-@ul
-- wrapper distributions
-- caches
-- local properties
-- local init scripts
-@ulend
+---
+@title[Configuration phase]
+@snap[north]
+Configuration phase
+@spanend
+
+---
+@title[Execution phase]
+@snap[north]
+Execution phase
+@spanend
+
+---
+@title[Gradle user home]
+@snap[north]
+Gradle user home directory
+@snapend
+- Defaults to $HOME/.gradle
+- Could be configured by GRADLE_USER_HOME env
+- Contains
+	@ul
+	- caches
+		- artifact/module cache
+		- script cache
+		- build cache
+	- wrapper distributions
+	- daemon logs
+	- local properties
+	- local init scripts
+	@ulend
 
 ---
 @title[Gradle wrapper]
 @snap[north]
 Gradle wrapper
 @snapend
-
-- distribution-type - all/bin
+Used to make sure that all are using the same Gradle version
+Two types of distribution
+- binary - just compiled classes
+- all - contains sources and documentation
+	- useful in IDE to have content assist
 - example
 ```bash
 $ gradle init --type java-library --dsl kotlin
@@ -47,6 +74,9 @@ Properties lookup
 @snapend
 
 @snap[west fragment]
+During initialization Gradle reads properties.
+Later values wins
+
 Documentation
 https://docs.gradle.org/current/userguide/build_environment.html
 
@@ -57,6 +87,37 @@ https://docs.gradle.org/current/userguide/build_environment.html
 @ulend
 @snapend
 
+
+---
+@title[Gradle daemon]
+@snap[north]
+Gradle daemon
+@snapend
+- speeds up configuration phase by reusing result from previous run
+- Daemons need to be compatible
+	- java version
+	- jvm properties
+---
+@title[Gradle daemon]
+@snap[north]
+Gradle daemon
+@snapend
+- prevent multiple incompatible daemons by setting *org.gradle.jvmargs* property in GRADLE_USER_HOME/gradle.properties
+- idle timeout defaults to 3 hours
+	- set custom timeout by setting *org.gradle.daemon.idletimeout* in GRADLE_USER_HOME/gradle.properties
+
+---
+@title[Init script]
+@snap[north]
+Init script
+@snapend
+- Init scripts are executed with every build
+- Good place for local defaults
+	- build scan
+	- repositories
+- location
+	- $GRADLE_USER_HOME/init.d/\*.gradle
+	- $GRADLE_USER_HOME/init.gradle
 
 ---
 @title[build-scan.gradle]
@@ -84,10 +145,54 @@ rootProject {
     }
 }
 ```
-@[2-4](define repositories)
-@[6-8](build script classpath)
-@[12](apply build scan plugin)
-@[14-17](configure plugin extension to aggree with publishing)
+@[2-4](Define repositories with plugin dependencies)
+@[6-8](Build script classpath)
+@[12](Apply build scan plugin)
+@[14-17](Configure plugin extension to aggree with publishing)
+
+---
+@title[Basic script objects]
+@snap[north]
+Basic script objects
+@snapend
+- configurations
+- dependencies
+- tasks
+- plugins
+
+---
+@title[Build types]
+@snap[north]
+Build types
+@snapend
+- Single project build
+- Multiproject build
+- Composite build
+
+---
+@title[Single project build]
+@snap[north]
+Single project build
+@snapend
+- Just one project that only external dependencies
+
+---
+@title[Multiproject build]
+@snap[north]
+Multiproject build
+@snapend
+- more projects/libraries that are compiled together
+- Gradle solves task execution order
+- compilation results may be used immediatelly by another projects in the build
+
+---
+@title[Composite build]
+@snap[north]
+Composite build
+@snapend
+- When you need to modify code of the library together with code that uses that library
+- No need to release and deploy to artifactory
+- External dependencies that are produced by included builds are replaced as project dependencies
 
 ---
 @title[Slide title]

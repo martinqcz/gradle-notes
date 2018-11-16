@@ -10,8 +10,8 @@ logo-position: top-left
 
 footnote: "Gradle: Build happiness"
 
-# highlight: atom-one-dark
-highlight: monokai
+highlight: atom-one-dark
+# highlight: monokai
 # highlight: black
 # highlight: moon
 # highlight: night
